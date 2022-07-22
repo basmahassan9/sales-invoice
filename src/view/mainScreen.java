@@ -64,7 +64,9 @@ public class mainScreen extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jTable1);
 
         jButton1.setText("Create new invoice");
+        jButton1.addActionListener(actionListener);
 
+        jButton2.addActionListener(actionListener);
         jButton2.setText("Delete");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -115,7 +117,9 @@ public class mainScreen extends javax.swing.JFrame {
         jScrollPane2.setViewportView(jTable2);
 
         jButton3.setText("Create new item");
+        jButton3.addActionListener(actionListener);
 
+        jButton4.addActionListener(actionListener);
         jButton4.setText("Delete");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -201,9 +205,11 @@ public class mainScreen extends javax.swing.JFrame {
         jMenu1.setText("File");
 
         jMenuItem1.setText("Load file");
+        jMenuItem1.addActionListener(actionListener);
         jMenu1.add(jMenuItem1);
 
         jMenuItem2.setText("Save file");
+        jMenuItem2.addActionListener(actionListener);
         jMenu1.add(jMenuItem2);
 
         jMenuBar1.add(jMenu1);
