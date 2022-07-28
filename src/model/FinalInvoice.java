@@ -22,14 +22,14 @@ public class FinalInvoice {
     private ArrayList<InvoiceDetails> Data;
     private DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
 
-    public FinalInvoice(int No, String cust, Date invDate, ArrayList<InvoiceDetails> Data) {
+    public FinalInvoice(int No, String cust, Date invDate) {
         this.No = No;
         this.cust = cust;
         this.invDate = invDate;
-        this.Data = Data;
+       
         
     }
-
+  
     public int getNo() {
         return No;
     }
@@ -81,4 +81,6 @@ public class FinalInvoice {
         
         return total;
     }
+
+    
 }

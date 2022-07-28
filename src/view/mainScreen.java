@@ -5,6 +5,18 @@
  */
 package view;
 
+import control.InvoiceActions;
+import control.ListActions;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import javax.swing.JLabel;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.event.ListSelectionListener;
+import model.FinalInvoice;
+import model.InvTableModel;
+import model.InvoiceDetails;
+
 /**
  *
  * @author Basma
@@ -46,6 +58,8 @@ public class mainScreen extends javax.swing.JFrame {
         jTable2 = new javax.swing.JTable();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -61,6 +75,12 @@ public class mainScreen extends javax.swing.JFrame {
                 "No.", "Date", "Customer", "Total"
             }
         ));
+        jTable1.getSelectionModel().addListSelectionListener(selectListener);
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         jButton1.setText("Create new invoice");
@@ -111,7 +131,7 @@ public class mainScreen extends javax.swing.JFrame {
 
             },
             new String [] {
-                "No.", "Item name", "Item price", "Count", "Total"
+                "Item name", "Item price", "Count", "Total"
             }
         ));
         jScrollPane2.setViewportView(jTable2);
@@ -129,7 +149,7 @@ public class mainScreen extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(24, Short.MAX_VALUE))
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(54, 54, 54)
                 .addComponent(jButton3)
@@ -149,33 +169,48 @@ public class mainScreen extends javax.swing.JFrame {
                 .addContainerGap(61, Short.MAX_VALUE))
         );
 
+        jLabel2.setText("jLabel2");
+
+        jLabel6.setText("jLabel6");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(42, 42, 42)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(42, 42, 42)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel5))
-                        .addGap(95, 95, 95)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(totalLabel)
-                            .addComponent(noLabel)))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel1)
+                                    .addComponent(jLabel5))
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel2Layout.createSequentialGroup()
+                                        .addGap(95, 95, 95)
+                                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(noLabel)
+                                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                                .addComponent(totalLabel)
+                                                .addGap(48, 48, 48))))
+                                    .addGroup(jPanel2Layout.createSequentialGroup()
+                                        .addGap(84, 84, 84)
+                                        .addComponent(jLabel6))))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel3)
+                                    .addComponent(jLabel4))
+                                .addGap(81, 81, 81)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel2)
+                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
+                                        .addComponent(jTextField2)))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 107, Short.MAX_VALUE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel4))
-                        .addGap(81, 81, 81)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
-                            .addComponent(jTextField2))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(34, 34, 34)
-                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(34, 34, 34)
+                        .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -184,7 +219,8 @@ public class mainScreen extends javax.swing.JFrame {
                 .addGap(28, 28, 28)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(noLabel))
+                    .addComponent(noLabel)
+                    .addComponent(jLabel2))
                 .addGap(33, 33, 33)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
@@ -196,7 +232,8 @@ public class mainScreen extends javax.swing.JFrame {
                 .addGap(24, 24, 24)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(totalLabel))
+                    .addComponent(totalLabel)
+                    .addComponent(jLabel6))
                 .addGap(33, 33, 33)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(36, Short.MAX_VALUE))
@@ -233,6 +270,10 @@ public class mainScreen extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+  
+    }//GEN-LAST:event_jTable1MouseClicked
 
     /**
      * @param args the command line arguments
@@ -275,9 +316,11 @@ public class mainScreen extends javax.swing.JFrame {
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
@@ -294,4 +337,80 @@ public class mainScreen extends javax.swing.JFrame {
     private javax.swing.JLabel noLabel;
     private javax.swing.JLabel totalLabel;
     // End of variables declaration//GEN-END:variables
+    private InvoiceActions actionListener = new InvoiceActions(this);
+    private ArrayList<FinalInvoice> invoiceArr;
+    public static SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+    private ArrayList<InvoiceDetails> linesArr;
+    private ListActions selectListener = new ListActions(this);
+    private InvTableModel invModel;
+
+    public InvTableModel getInvModel() {
+        return invModel;
+    }
+
+    public void setInvModel(InvTableModel invModel) {
+        this.invModel = invModel;
+    }
+    
+    
+    
+    public ArrayList<InvoiceDetails> getLinesArr() {
+        return linesArr;
+    }
+
+    public void setLinesArr(ArrayList<InvoiceDetails> linesArr) {
+        this.linesArr = linesArr;
+    }
+    
+
+    
+    public void setInvoiceArr(ArrayList<FinalInvoice> invoiceArr) {
+        this.invoiceArr = invoiceArr;
+    }
+
+    public ArrayList<FinalInvoice> getInvoiceArr() {
+        return invoiceArr;
+    }
+
+    public JTable getjTable1() {
+        return jTable1;
+    }
+
+    public JTable getjTable2() {
+        return jTable2;
+    }
+    
+ 
+    public FinalInvoice getinvObject(int invNum) {
+        for (FinalInvoice inv : invoiceArr) {
+            if (inv.getNo() == invNum) {
+                return inv;
+            }
+        }
+        return null;
+    }
+
+    public JLabel getjLabel2() {
+        return jLabel2;
+    }
+
+    public JLabel getjLabel6() {
+        return jLabel6;
+    }
+
+    public JTextField getjTextField1() {
+        return jTextField1;
+    }
+
+    public JTextField getjTextField2() {
+        return jTextField2;
+    }
+
+    public InvoiceActions getActionListener() {
+        return actionListener;
+    }
+    
+
+
+
 }
