@@ -84,6 +84,7 @@ public class mainScreen extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jTable1);
 
         jButton1.setText("Create new invoice");
+        jButton1.setActionCommand("New Invoice");
         jButton1.addActionListener(actionListener);
 
         jButton2.addActionListener(actionListener);

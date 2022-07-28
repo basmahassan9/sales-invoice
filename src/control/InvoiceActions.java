@@ -28,8 +28,11 @@ import javax.swing.table.DefaultTableModel;
 import model.FinalInvoice;
 import model.InvTableModel;
 import model.InvoiceDetails;
+import view.newInvScreen;
 import view.mainScreen;
-import view.newInvoiceScreen;
+import view.newInvScreen;
+
+import view.newItemScreen;
 import view.newItemScreen;
 
 /**
@@ -39,9 +42,8 @@ import view.newItemScreen;
 public class InvoiceActions implements ActionListener {
 
     private mainScreen frame;
-    private newInvoiceScreen inv;
-    private newItemScreen item;
-
+   
+    
     public InvoiceActions(mainScreen frame) {
         this.frame = frame;
     }
@@ -65,7 +67,7 @@ public class InvoiceActions implements ActionListener {
                 deleteInvoice();
                 break;
 
-            case "New Line":
+            case "Create new item":
                 createNewLine();
                 break;
 
@@ -73,38 +75,38 @@ public class InvoiceActions implements ActionListener {
                 deleteLine();
                 break;
 
-            case "newInvoiceOK":
+            case "newInvOK":
                 newInvoiceDialogOK();
                 break;
 
-            case "newInvoiceCancel":
+            case "newInvCancel":
                 newInvoiceDialogCancel();
                 break;
 
-            case "newLineCancel":
+            case "newItemCancel":
                 newLineDialogCancel();
                 break;
 
-            case "newLineOK":
+            case "newItemOK":
                 newLineDialogOK();
                 break;
         }
     }
 
     private void newLineDialogOK() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        System.out.println("line ok");
     }
 
     private void newLineDialogCancel() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       System.out.println("lin can");
     }
 
     private void newInvoiceDialogCancel() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+      System.out.println("inv can");
     }
 
     private void newInvoiceDialogOK() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       System.out.println("inv ok");
     }
 
     private void deleteLine() {
@@ -112,7 +114,8 @@ public class InvoiceActions implements ActionListener {
     }
 
     private void createNewLine() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       
+        new newItemScreen(frame, true).show();
     }
 
     private void deleteInvoice() {
@@ -120,7 +123,9 @@ public class InvoiceActions implements ActionListener {
     }
 
     private void createNewInvoice() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       
+        new newInvScreen(frame, true).show();
+
     }
 
     private void loadFile() {
