@@ -43,8 +43,8 @@ import view.newItemScreen;
 public class InvoiceActions implements ActionListener {
 
     private mainScreen frame;
-    private newInvScreen InvDialog = new newInvScreen(frame, true);
-    private newItemScreen ItemDialog = new newItemScreen(frame, true);
+    private newInvScreen InvDialog;
+    private newItemScreen ItemDialog ;
 
     public InvoiceActions(mainScreen frame) {
         this.frame = frame;
@@ -77,8 +77,8 @@ public class InvoiceActions implements ActionListener {
                 createNewLine();
                 break;
 
-            case "Delete Line":
-                deleteLine();
+            case "Delete Item":
+                deleteItem();
                 break;
 
             case "newInvOK":
@@ -93,7 +93,7 @@ public class InvoiceActions implements ActionListener {
                 newItemCancel();
                 break;
 
-            case "newItemOK":
+            case "newItemOk":
                 newItemOK();
                 break;
         }
@@ -117,16 +117,18 @@ public class InvoiceActions implements ActionListener {
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(frame, "Cannot convert price", "Invalid number format", JOptionPane.ERROR_MESSAGE);
         }
-        int selectedItem = frame.getjTable2().getSelectedRow();
-        if(selectedItem >= 0){
+        int selectedItem = frame.getjTable1().getSelectedRow();
+        if(selectedItem != -1){
             FinalInvoice inv = frame.getInvoiceArr().get(selectedItem);
             InvoiceDetails item = new InvoiceDetails(name, price, count, inv);
             frame.getLinesArr().add(item);
             DetailsTableModel model = (DetailsTableModel) frame.getjTable2().getModel();
             model.fireTableDataChanged();
             frame.getInvModel().fireTableDataChanged();
+            System.out.println("done2");
         }
-        frame.getjTable1().setRowSelectionInterval(selectedItem, selectedItem);
+        System.out.println("done");
+        //frame.getjTable1().setRowSelectionInterval(selectedItem, selectedItem);
         ItemDialog.dispose();
     }
 
@@ -163,7 +165,7 @@ public class InvoiceActions implements ActionListener {
         InvDialog.dispose();
     }
 
-    private void deleteLine() {
+    private void deleteItem() {
         int itemIndex = frame.getjTable2().getSelectedRow();
         int invIndex =frame.getjTable1().getSelectedRow();
         if (itemIndex >=0){
@@ -178,7 +180,7 @@ public class InvoiceActions implements ActionListener {
 
     private void createNewLine() {
 
-        //new newItemScreen(frame, true).show();
+        ItemDialog = new newItemScreen(frame);
         ItemDialog.setVisible(true);
 
     }
@@ -198,7 +200,7 @@ public class InvoiceActions implements ActionListener {
     }
 
     private void createNewInvoice() {
-
+        InvDialog = new newInvScreen(frame);
         InvDialog.setVisible(true);
 
     }

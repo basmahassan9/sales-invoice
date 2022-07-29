@@ -89,6 +89,7 @@ public class mainScreen extends javax.swing.JFrame {
 
         jButton2.addActionListener(actionListener);
         jButton2.setText("Delete");
+        jButton2.setActionCommand("Delete Invoice");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -142,6 +143,7 @@ public class mainScreen extends javax.swing.JFrame {
 
         jButton4.addActionListener(actionListener);
         jButton4.setText("Delete");
+        jButton4.setActionCommand("Delete Item");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
