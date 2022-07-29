@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -57,8 +58,8 @@ public class InvoiceActions implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         switch (e.getActionCommand()) {
-            case "Save Files":
-                // saveFile();
+            case "Save file":
+                saveFile();
                 break;
 
             case "Load file":
@@ -109,13 +110,13 @@ public class InvoiceActions implements ActionListener {
           try {
             count = Integer.parseInt(p1);
         } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(frame, "Cannot convert number", "Invalid number format", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(frame, "Can't convert number", "Invalid number format", JOptionPane.ERROR_MESSAGE);
         }
 
         try {
             price = Double.parseDouble(c1);
         } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(frame, "Cannot convert price", "Invalid number format", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(frame, "Can't convert price", "Invalid number format", JOptionPane.ERROR_MESSAGE);
         }
         int selectedItem = frame.getjTable1().getSelectedRow();
         if(selectedItem != -1){
@@ -125,10 +126,12 @@ public class InvoiceActions implements ActionListener {
             DetailsTableModel model = (DetailsTableModel) frame.getjTable2().getModel();
             model.fireTableDataChanged();
             frame.getInvModel().fireTableDataChanged();
-            System.out.println("done2");
+         
+        }  else{
+            JOptionPane.showMessageDialog(frame, "Please select Invoice", "Wrong entry", JOptionPane.ERROR_MESSAGE);
         }
-        System.out.println("done");
-        //frame.getjTable1().setRowSelectionInterval(selectedItem, selectedItem);
+                     
+        frame.getjTable1().setRowSelectionInterval(selectedItem, selectedItem);
         ItemDialog.dispose();
     }
 
@@ -150,7 +153,7 @@ public class InvoiceActions implements ActionListener {
         try {
             d = mainScreen.dateFormat.parse(s);
         } catch (ParseException ex) {
-            JOptionPane.showMessageDialog(frame, "Cannot parse date, resetting to today.", "Invalid date format", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(frame, "Can't parse date", "Invalid date format", JOptionPane.ERROR_MESSAGE);
         }
         int num =0;
         for (FinalInvoice inv : frame.getInvoiceArr()){
@@ -168,13 +171,16 @@ public class InvoiceActions implements ActionListener {
     private void deleteItem() {
         int itemIndex = frame.getjTable2().getSelectedRow();
         int invIndex =frame.getjTable1().getSelectedRow();
-        if (itemIndex >=0){
+        if (itemIndex !=-1){
             frame.getLinesArr().remove(itemIndex);
             DetailsTableModel model = (DetailsTableModel) frame.getjTable2().getModel();
             model.fireTableDataChanged();
             frame.getjLabel6().setText("" + frame.getInvoiceArr().get(invIndex).getInvoiceTotal());
             frame.getInvModel().fireTableDataChanged();
             frame.getjTable1().setRowSelectionInterval(invIndex, invIndex);
+        }
+        else{
+            JOptionPane.showMessageDialog(frame, "Please select Item", "Wrong entry", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -187,7 +193,7 @@ public class InvoiceActions implements ActionListener {
 
     private void deleteInvoice() {
       int invIndex = frame.getjTable1().getSelectedRow();
-      if(invIndex >=0){
+      if(invIndex != -1){
           frame.getInvoiceArr().remove(invIndex);
           frame.getInvModel().fireTableDataChanged();
           frame.getjTable2().setModel(new DetailsTableModel((null)));
@@ -196,6 +202,9 @@ public class InvoiceActions implements ActionListener {
            frame.getjTextField1().setText("");
            frame.getjTextField2().setText("");
            frame.getjLabel6().setText("");
+      }
+      else{
+          JOptionPane.showMessageDialog(frame, "Please select Invoice", "Wrong entry", JOptionPane.ERROR_MESSAGE);
       }
     }
 
@@ -211,7 +220,7 @@ public class InvoiceActions implements ActionListener {
             int result = fc.showOpenDialog(frame);
             if (result == JFileChooser.APPROVE_OPTION) {
                 File file = fc.getSelectedFile();
-                // fc.setMultiSelectionEnabled(true); 
+            
                 Path path = Paths.get(file.getAbsolutePath());
 
                 BufferedReader br;
@@ -264,39 +273,38 @@ public class InvoiceActions implements ActionListener {
 
     }
 
-}
 
-/*  private void saveFile() {
+      private void saveFile() {
+        ArrayList<FinalInvoice> invoicesArray = frame.getInvoiceArr();
         JFileChooser fc = new JFileChooser();
-        int result = fc.showSaveDialog(this);
-        if(result == JFileChooser.APPROVE_OPTION){
-            String path = fc.getSelectedFile().getPath();
-            FileOutputStream fos = null;
-            try{
-            fos = new FileOutputStream(path);
-            String comma = ",";
-             for(int i = 0; i < jTable1.getRowCount(); i++){//rows
-                for(int j = 0; j < jTable1.getColumnCount(); j++){
-         
-                 
-                   
-              fos.write( jTable1.getValueAt(i, j).toString().getBytes());
-              fos.write(comma.getBytes()) ; 
+        try {
+            int result = fc.showSaveDialog(frame);
+            if (result == JFileChooser.APPROVE_OPTION) {
+                File headerFile = fc.getSelectedFile();
+                FileWriter hfw = new FileWriter(headerFile);
+                String inv = "";
+                String item = "";
+                for (FinalInvoice invoice : invoicesArray) {
+                    inv += invoice.toString();
+                    inv += "\n";
+                    for (InvoiceDetails line : invoice.getData()) {
+                        item += line.toString();
+                        item += "\n";
+                    }
                 }
-             fos.write(10);
-             }
-            }catch(FileNotFoundException e){
-              e.printStackTrace();
-          } catch(IOException e){
-                            e.printStackTrace();
-
-          }finally{
-                try {
-                    fos.close();
-                } catch (IOException ex) {
-                    
-                }
+                
+                inv = inv.substring(0, inv.length()-1);
+                item = item.substring(0, item.length()-1);
+                result = fc.showSaveDialog(frame);
+                File lineFile = fc.getSelectedFile();
+                FileWriter lfw = new FileWriter(lineFile);
+                hfw.write(inv);
+                lfw.write(item);
+                hfw.close();
+                lfw.close();
             }
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(frame, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
-    }*/
-//}
+    }
+}
