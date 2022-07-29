@@ -5,6 +5,8 @@
  */
 package view;
 
+import javax.swing.JTextField;
+
 /**
  *
  * @author Basma
@@ -48,8 +50,12 @@ public class newItemScreen extends javax.swing.JDialog {
         jTextField1.setText(" ");
 
         jButton1.setText("Ok");
+        jButton1.setActionCommand("newItemOk");
+        //jButton1.addActionListener(frame.getActionListener());
 
         jButton2.setText("Cancel");
+        jButton2.setActionCommand("newItemCancel");
+        //jButton2.addActionListener(frame.getActionListener());
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -152,4 +158,17 @@ public class newItemScreen extends javax.swing.JDialog {
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     // End of variables declaration//GEN-END:variables
+
+    public JTextField getjTextField1() {
+        return jTextField1;
+    }
+
+    public JTextField getjTextField2() {
+        return jTextField2;
+    }
+
+    public JTextField getjTextField3() {
+        return jTextField3;
+    }
+
 }

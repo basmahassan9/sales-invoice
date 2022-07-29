@@ -25,6 +25,7 @@ import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import model.DetailsTableModel;
 import model.FinalInvoice;
 import model.InvTableModel;
 import model.InvoiceDetails;
@@ -42,10 +43,15 @@ import view.newItemScreen;
 public class InvoiceActions implements ActionListener {
 
     private mainScreen frame;
-   
-    
+    private newInvScreen InvDialog = new newInvScreen(frame, true);
+    private newItemScreen ItemDialog = new newItemScreen(frame, true);
+
     public InvoiceActions(mainScreen frame) {
         this.frame = frame;
+    }
+
+    public InvoiceActions() {
+       
     }
 
     @Override
@@ -76,55 +82,124 @@ public class InvoiceActions implements ActionListener {
                 break;
 
             case "newInvOK":
-                newInvoiceDialogOK();
+                newInvOK();
                 break;
 
             case "newInvCancel":
-                newInvoiceDialogCancel();
+                newInvCancel();
                 break;
 
             case "newItemCancel":
-                newLineDialogCancel();
+                newItemCancel();
                 break;
 
             case "newItemOK":
-                newLineDialogOK();
+                newItemOK();
                 break;
         }
     }
 
-    private void newLineDialogOK() {
-        System.out.println("line ok");
+    private void newItemOK() {
+        ItemDialog.setVisible(false);
+        String name = ItemDialog.getjTextField1().getText(); 
+        String p1 = ItemDialog.getjTextField2().getText();
+        String c1 = ItemDialog.getjTextField3().getText();
+        int count = 1;
+        double price =1;
+          try {
+            count = Integer.parseInt(p1);
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(frame, "Cannot convert number", "Invalid number format", JOptionPane.ERROR_MESSAGE);
+        }
+
+        try {
+            price = Double.parseDouble(c1);
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(frame, "Cannot convert price", "Invalid number format", JOptionPane.ERROR_MESSAGE);
+        }
+        int selectedItem = frame.getjTable2().getSelectedRow();
+        if(selectedItem >= 0){
+            FinalInvoice inv = frame.getInvoiceArr().get(selectedItem);
+            InvoiceDetails item = new InvoiceDetails(name, price, count, inv);
+            frame.getLinesArr().add(item);
+            DetailsTableModel model = (DetailsTableModel) frame.getjTable2().getModel();
+            model.fireTableDataChanged();
+            frame.getInvModel().fireTableDataChanged();
+        }
+        frame.getjTable1().setRowSelectionInterval(selectedItem, selectedItem);
+        ItemDialog.dispose();
     }
 
-    private void newLineDialogCancel() {
-       System.out.println("lin can");
+    private void newItemCancel() {
+        ItemDialog.setVisible(false);
+        ItemDialog.dispose();
     }
 
-    private void newInvoiceDialogCancel() {
-      System.out.println("inv can");
+    private void newInvCancel() {
+        InvDialog.setVisible(false);
+        InvDialog.dispose();
     }
 
-    private void newInvoiceDialogOK() {
-       System.out.println("inv ok");
+    private void newInvOK() {
+        InvDialog.setVisible(false);
+        String name = InvDialog.getjTextField2().getText();
+        String s = InvDialog.getjTextField1().getText();
+        Date d = new Date();
+        try {
+            d = mainScreen.dateFormat.parse(s);
+        } catch (ParseException ex) {
+            JOptionPane.showMessageDialog(frame, "Cannot parse date, resetting to today.", "Invalid date format", JOptionPane.ERROR_MESSAGE);
+        }
+        int num =0;
+        for (FinalInvoice inv : frame.getInvoiceArr()){
+            if(inv.getNo()> num){
+                num = inv.getNo();
+            }
+        }
+        num+=1;
+        FinalInvoice newInv = new FinalInvoice(num, name, d);
+        frame.getInvoiceArr().add(newInv);
+        frame.getInvModel().fireTableDataChanged();
+        InvDialog.dispose();
     }
 
     private void deleteLine() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        int itemIndex = frame.getjTable2().getSelectedRow();
+        int invIndex =frame.getjTable1().getSelectedRow();
+        if (itemIndex >=0){
+            frame.getLinesArr().remove(itemIndex);
+            DetailsTableModel model = (DetailsTableModel) frame.getjTable2().getModel();
+            model.fireTableDataChanged();
+            frame.getjLabel6().setText("" + frame.getInvoiceArr().get(invIndex).getInvoiceTotal());
+            frame.getInvModel().fireTableDataChanged();
+            frame.getjTable1().setRowSelectionInterval(invIndex, invIndex);
+        }
     }
 
     private void createNewLine() {
-       
-        new newItemScreen(frame, true).show();
+
+        //new newItemScreen(frame, true).show();
+        ItemDialog.setVisible(true);
+
     }
 
     private void deleteInvoice() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+      int invIndex = frame.getjTable1().getSelectedRow();
+      if(invIndex >=0){
+          frame.getInvoiceArr().remove(invIndex);
+          frame.getInvModel().fireTableDataChanged();
+          frame.getjTable2().setModel(new DetailsTableModel((null)));
+          frame.setLinesArr(null);
+           frame.getjLabel2().setText("");
+           frame.getjTextField1().setText("");
+           frame.getjTextField2().setText("");
+           frame.getjLabel6().setText("");
+      }
     }
 
     private void createNewInvoice() {
-       
-        new newInvScreen(frame, true).show();
+
+        InvDialog.setVisible(true);
 
     }
 

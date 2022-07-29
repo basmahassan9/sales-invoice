@@ -5,17 +5,23 @@
  */
 package view;
 
+import control.InvoiceActions;
+import javax.swing.JTextField;
+
 /**
  *
  * @author Basma
  */
 public class newInvScreen extends javax.swing.JDialog {
-
+       private InvoiceActions actionListener;
+       private mainScreen frame = new mainScreen();
     /**
      * Creates new form NewJDialog
      */
     public newInvScreen(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
+     
+        actionListener = new InvoiceActions(frame);
         initComponents();
     }
     
@@ -43,8 +49,12 @@ public class newInvScreen extends javax.swing.JDialog {
         jLabel2.setText("Customer Name");
 
         jButton1.setText("Ok");
+        jButton1.setActionCommand("newInvOK");
+        jButton1.addActionListener(frame.getActionListener());
 
+        //jButton2.addActionListener(actionListener);
         jButton2.setText("Cancel");
+        jButton2.setActionCommand("newInvCancel");
 
         jTextField1.setText(" ");
 
@@ -143,4 +153,13 @@ public class newInvScreen extends javax.swing.JDialog {
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     // End of variables declaration//GEN-END:variables
+
+    public JTextField getjTextField1() {
+        return jTextField1;
+    }
+
+    public JTextField getjTextField2() {
+        return jTextField2;
+    }
+
 }

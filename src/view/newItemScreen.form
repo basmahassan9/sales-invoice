@@ -105,12 +105,20 @@
     <Component class="javax.swing.JButton" name="jButton1">
       <Properties>
         <Property name="text" type="java.lang.String" value="Ok"/>
+        <Property name="actionCommand" type="java.lang.String" value="newItemOk"/>
       </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="//jButton1.addActionListener(frame.getActionListener());&#xd;&#xa;"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JButton" name="jButton2">
       <Properties>
         <Property name="text" type="java.lang.String" value="Cancel"/>
+        <Property name="actionCommand" type="java.lang.String" value="newItemCancel"/>
       </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="//jButton2.addActionListener(frame.getActionListener());&#xd;&#xa;"/>
+      </AuxValues>
     </Component>
   </SubComponents>
 </Form>
