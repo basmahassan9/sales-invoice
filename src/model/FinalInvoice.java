@@ -81,6 +81,11 @@ public class FinalInvoice {
         
         return total;
     }
+    @Override
+    public String toString() {
+        return No + "," + df.format(invDate) + "," + cust;
+    }
 
-    
+
+
 }

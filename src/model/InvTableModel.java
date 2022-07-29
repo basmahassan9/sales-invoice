@@ -7,7 +7,6 @@ package model;
 
 import java.util.ArrayList;
 import javax.swing.table.AbstractTableModel;
-import static jdk.nashorn.internal.runtime.regexp.joni.constants.AsmConstants.S;
 import view.mainScreen;
 
 /**

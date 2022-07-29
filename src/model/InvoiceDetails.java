@@ -57,5 +57,8 @@ public class InvoiceDetails {
     public double getTotal() {
         return price * count;
     }
-    
+    @Override
+    public String toString() {
+        return inv.getNo() + "," + name + "," + price + "," + count;
+    }
 }
