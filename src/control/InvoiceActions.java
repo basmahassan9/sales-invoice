@@ -236,6 +236,7 @@ public class InvoiceActions implements ActionListener {
                     FinalInvoice line = new FinalInvoice(invNum, name, invDate);
 
 
+
                     invlines.add(line);
                     // model.addRow(arr);
                 }
@@ -258,6 +259,18 @@ public class InvoiceActions implements ActionListener {
                         inv.getData().add(line);
 
                     }
+                    List<FinalInvoice> invoices = frame.getInvoiceArr();
+                    for(FinalInvoice x : invoices){
+                        System.out.println(x.getNo() );
+                        System.out.println("{");
+                        System.out.println(x.getInvDate()  + ", " + x.getCust());
+                        List<InvoiceDetails> data = x.getData();
+                        for(InvoiceDetails y: data){
+                            System.out.println(y.getName() + ", " +  y.getPrice() + ", " + y.getCount());
+                        }
+                        System.out.println("}");
+                    }
+
                 }
                 InvTableModel invModel = new InvTableModel(invlines);
                 frame.setInvModel(invModel);
